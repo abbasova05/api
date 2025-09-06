@@ -28,5 +28,11 @@
         "surname": "Abbasova",
         "email": "abbasovaa@gmail.com",
         "password": "scrypt:32768:8:1$KGhkeng9g0pv2mfp$3ae443be9d84dfce8043c16886455fec11d624023a00292372bfca5415bfb46d608d47b5805419d0a5da68305445d58a76f5bdb3bc353344c493dba4b20591cb"
+    },
+    {
+        "username": "Tehmine",
+        "surname": "Abbasova",
+        "email": "abbasovaaa@gmail.com",
+        "password": "scrypt:32768:8:1$rDkghcgGkpqP7Uzz$df4c47b9e3b66074c7daf567081e45d3bbd9d2ae2bcc6c1c9c961965aab293efd3c9a5f7d291d1afbda6b608754de39ae3013159e064f595affade4532ee5a49"
     }
 ]
