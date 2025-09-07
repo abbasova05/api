@@ -16,8 +16,11 @@ if not os.path.exists(USERS_FILE):
 
 # İstifadəçiləri yüklə və yadda saxla
 def load_users():
-    with open(USERS_FILE, "r") as f: 
-        return json.load(f)
+    try:
+        with open(USERS_FILE, "r") as f: 
+            return json.load(f)
+    except json.JSONDecodeError:
+        return []
 
 def save_users(users):
     with open(USERS_FILE, "w") as f:
@@ -38,13 +41,27 @@ def is_strong_password(password):
     return True
 
 # İlk açılışda login səhifəsi
-@app.route("/")
-def home():
+@app.route("/login", methods=["GET", "POST"])
+def login():
     users = load_users()
     if not users:
         flash("İlk öncə qeydiyyatdan keçin.")
         return redirect(url_for("register"))
-    return redirect(url_for("login"))
+
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+
+        user = next((u for u in users if u["email"] == email), None)
+        if user and check_password_hash(user["password"], password):
+            session["user"] = user["email"]
+            flash(f"Xoş gəldiniz, {user['username']}!")
+            return redirect(url_for("dashboard"))
+        else:
+            flash("Email və ya şifrə yanlışdır!")
+            return redirect(url_for("login"))
+
+    return render_template("login.html")
 
 # Register səhifəsi
 @app.route("/register", methods=["GET", "POST"])
@@ -84,27 +101,6 @@ def register():
     return render_template("register.html")
 
 # Login səhifəsi
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    users = load_users()
-    if not users:
-        flash("İlk öncə qeydiyyatdan keçin.")
-        return redirect(url_for("register"))
-
-    if request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
-
-        user = next((u for u in users if u["email"] == email), None)
-        if user and check_password_hash(user["password"], password):
-            session["user"] = user["email"]
-            flash(f"Xoş gəldiniz, {user['username']}!")
-            return redirect(url_for("dashboard"))
-        else:
-            flash("Email və ya şifrə yanlışdır!")
-            return redirect(url_for("login"))
-
-    return render_template("login.html")
 
 # Dashboard səhifəsi
 @app.route("/dashboard")

@@ -16,8 +16,11 @@ if not os.path.exists(USERS_FILE):
 
 # İstifadəçiləri yüklə və yadda saxla
 def load_users():
-    with open(USERS_FILE, "r") as f: 
-        return json.load(f)
+    try:
+        with open(USERS_FILE, "r") as f: 
+            return json.load(f)
+    except json.JSONDecodeError:
+        return []
 
 def save_users(users):
     with open(USERS_FILE, "w") as f:
