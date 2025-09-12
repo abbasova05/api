@@ -41,7 +41,7 @@ def is_strong_password(password):
     return True
 
 # İlk açılışda login səhifəsi
-@app.route("/")
+@app.route("/loginn")
 def home():
     users = load_users()
     if not users:
